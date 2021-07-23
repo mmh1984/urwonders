@@ -1,0 +1,69 @@
+<div class="row">
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Categories</h5>
+            </div>
+            <div class="card-body">
+                <div id="message"></div>
+                <div class="table-responsive">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td>Title</td>
+                                <td><input type="text" id="title" class="form-control" /></td>
+                            </tr>
+                            <tr>
+                                <td>Description</td>
+                                <td><textarea id="description" class="form-control" rows="5"></textarea></td>
+                            </tr>
+
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <div role="group" class="btn-group"><button class="btn btn-primary" type="button" onclick="save_category()">Save</button><button class="btn btn-warning" type="button" onclick="load_page('views/categorylist.php')">Back</button></div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function save_category() {
+        var title = $("#title").val();
+        var description = $("#description").val();
+
+        if (title.length == 0) {
+            $("#message").html("<p class='alert alert-warning'>Enter the title</p>");
+        } else if (description.length == 0) {
+            $("#message").html("<p class='alert alert-warning'>Enter description</p>");
+
+        } else {
+            $.ajax({
+                type: "POST",
+                url: "controls/category.php",
+                data: {
+                    action: "save",
+                    title: title,
+                    description: description,
+
+                },
+                success: function(response) {
+
+                    if (response == "OK") {
+                        $("#message").html("<p class='alert alert-success'>Category Saved</p>");
+                        setTimeout(function() {
+                            load_page('views/categorylist.php')
+                        }, 1000);
+                    } else {
+                        $("#message").html("<p class='alert alert-danger'>" + response + "</p>");
+                    }
+                }
+            });
+        }
+
+    }
+</script>

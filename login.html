@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>urwonders</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700">
+    <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
+    <link rel="stylesheet" href="assets/fonts/ionicons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.6.1/css/pikaday.min.css">
+    <link rel="stylesheet" href="assets/css/Login-Form-Clean.css">
+    <link rel="shortcut icon" href="favicon/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon/favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+    <div class="container-fluid" style="background-color: azure;height:100vh;padding-top: 10%;">
+
+
+
+        <div class="row">
+            <div class="col-md-4 col-lg-4 col-xl-4"></div>
+            <div class="col-md-4 col-lg-4 col-xl-4" style="background-color: white;padding:30px;border:1px solid whitesmoke;border-radius: 20px;box-shadow: 2px 2px 2px black;">
+                <div class="illustration">
+                    <h2 class="text-dark text-center">User Login</h2>
+                    <div id="message"></div>
+                </div>
+                <div class="form-group"><input class="form-control text-center" type="text" name="email" placeholder="username or email" id="email"></div>
+                <div class="form-group"><input class="form-control text-center" type="password" name="password" placeholder="Password" id="password"></div>
+                <div class="form-group "><button class="btn btn-success btn-block" onclick="login()">Log In</button></div><a class="forgot text-center" href="index.php">Back</a>
+            </div>
+            <div class="col-md-4 col-lg-4 col-xl-4"></div>
+        </div>
+    </div>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/bs-init.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.6.1/pikaday.min.js"></script>
+    <script src="assets/js/theme.js"></script>
+</body>
+
+</html>
+<script>
+    function login() {
+        var email = $("#email").val();
+        var pass = $("#password").val();
+
+        if (email.length == 0) {
+            $("#message").html("<p class='alert alert-danger'>Please enter your email</p>");
+        } else if (pass.length == 0) {
+            $("#message").html("<p class='alert alert-danger'>Enter your password</p>");
+        } else {
+            var param = [];
+            param.push(email);
+            param.push(pass);
+            $.ajax({
+                url: "  ",
+                type: "POST",
+                data: {
+                    action: "login",
+                    content: param
+                },
+                success: function(response) {
+                    if (response == "1") {
+                        $("#message").html("<p class='alert alert-success'>Login Accepted</p>");
+                        setTimeout(function() {
+                            window.location.href = "dashboard.php"
+                        }, 2000);
+                    }
+                }
+
+            })
+        }
+    }
+</script>

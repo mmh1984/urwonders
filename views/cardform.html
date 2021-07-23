@@ -1,0 +1,105 @@
+<div class="row">
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Cards</h5>
+            </div>
+            <div class="card-body">
+                <div id="message"></div>
+                <div class="table-responsive">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td>Name</td>
+                                <td><input type="text" id="name" class="form-control" placeholder="Card Name" /></td>
+                            </tr>
+                            <tr>
+                                <td>Category</td>
+                                <td>
+                                    <select id="category" class="form-control"></select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Description</td>
+                                <td><textarea id="description" class="form-control" rows="5" placeholder="Card Description"></textarea></td>
+                            </tr>
+
+                            <tr>
+                                <td>Tag(s)</td>
+                                <td><input type="text" id="tag" class="form-control" placeholder="Card Tags (e.g animals,toys,nature,etc)" /></td>
+                            </tr>
+
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <div role="group" class="btn-group"><button class="btn btn-primary" type="button" onclick="save_cards()">Save</button><button class="btn btn-warning" type="button" onclick="load_page('views/cardlist.php')">Back</button></div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        category_list();
+    })
+
+    function category_list() {
+        $.ajax({
+            url: "controls/category.php",
+            type: "POST",
+            data: {
+                action: "categorylist"
+            },
+            success: function(response) {
+
+                $("#category").append(response);
+
+            }
+        })
+    }
+
+    function save_cards() {
+        var name = $("#name").val();
+        var description = $("#description").val();
+        var tag = $("#tag").val();
+        if (name.length == 0) {
+            $("#message").html("<p class='alert alert-warning'>Enter the name</p>");
+        } else if (description.length == 0) {
+            $("#message").html("<p class='alert alert-warning'>Enter description</p>");
+        } else if (tag.length == 0) {
+            $("#message").html("<p class='alert alert-warning'>Enter tags</p>");
+
+        } else {
+
+
+            $.ajax({
+                type: "POST",
+                url: "controls/cards.php",
+                data: {
+                    action: "save",
+                    name: name,
+                    category: $("#category").val(),
+                    description: description,
+                    tag: tag
+
+                },
+                success: function(response) {
+
+                    if (response == "OK") {
+                        $("#message").html("<p class='alert alert-success'>Cards Saved</p>");
+                        setTimeout(function() {
+                            load_page('views/cardlist.php')
+                        }, 1000);
+                    } else {
+                        $("#message").html("<p class='alert alert-danger'>" + response + "</p>");
+                    }
+                }
+            });
+        }
+
+    }
+</script>
